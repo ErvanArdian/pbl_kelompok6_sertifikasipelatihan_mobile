@@ -69,19 +69,9 @@ class PengajuanTab extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12), // Rounded corners for card
           ),
-<<<<<<< HEAD
-          margin: EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal:
-                  10.0), // Horizontal and vertical margins between cards
-          child: ListTile(
-            contentPadding: EdgeInsets.symmetric(
-                vertical: 10, horizontal: 16), // Padding inside the card
-=======
           margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0), // Horizontal and vertical margins between cards
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16), // Padding inside the card
->>>>>>> f7dc27623168e685380b8f6422ba48e801b3ec49
             title: Text(
               'Pengajuan Pelatihan ${index + 1}',
               style: TextStyle(
@@ -106,10 +96,6 @@ class PengajuanTab extends StatelessWidget {
       },
     );
   }
-<<<<<<< HEAD
-  
-=======
->>>>>>> f7dc27623168e685380b8f6422ba48e801b3ec49
 }
 
 class PelatihanTab extends StatelessWidget {
@@ -125,19 +111,9 @@ class PelatihanTab extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12), // Rounded corners for card
           ),
-<<<<<<< HEAD
-          margin: EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal:
-                  10.0), // Horizontal and vertical margins between cards
-          child: ListTile(
-            contentPadding: EdgeInsets.symmetric(
-                vertical: 10, horizontal: 16), // Padding inside the card
-=======
           margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0), // Horizontal and vertical margins between cards
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16), // Padding inside the card
->>>>>>> f7dc27623168e685380b8f6422ba48e801b3ec49
             title: Text(
               'Pelatihan ${index + 1}',
               style: TextStyle(
