@@ -184,7 +184,7 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 4),
-              Text('$courses courses',
+              Text('$courses pelatihan',
                   style: TextStyle(color: Color(0xFF608BC1), fontSize: 12)),
             ],
           ),

@@ -17,20 +17,20 @@ class TrainingCategoryPage extends StatelessWidget {
         children: [
           // Example card for training program with image
           trainingCard(
-            'AI Training Program',
+            'Artificial Intelligence',
             'January 2024',
-            'Location A',
-            100,
+            'Kota A',
+            1750000,
             50,
             'assets/ai_training.jpg', // Image asset
             context,
           ),
           SizedBox(height: 12), // Reduced space between cards
           trainingCard(
-            'Cyber Security Basics',
+            'Cyber Security',
             'February 2024',
-            'Location B',
-            120,
+            'Kota B',
+            1500000,
             60,
             'assets/cyber.jpg', // Image asset
             context,
@@ -71,8 +71,8 @@ class TrainingCategoryPage extends StatelessWidget {
               children: [
                 Text('Date: $date'),
                 Text('Location: $location'),
-                Text('Cost: \$ $cost'),
-                Text('Quota: $quota'),
+                Text('Biaya: \Rp $cost'),
+                Text('Kuota: $quota'),
               ],
             ),
             trailing: ElevatedButton(
