@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -35,9 +36,9 @@ class ProfilePage extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 20),
               children: [
-                _buildProfileOption(Icons.article, "Certificates"),
-                _buildProfileOption(Icons.edit, "Edit Profile"),
-                _buildProfileOption(Icons.logout, "Logout"),
+                _buildProfileOption(Icons.article, "Certificates", context),
+                _buildProfileOption(Icons.edit, "Edit Profile", context),
+                _buildProfileOption(Icons.logout, "Logout", context),
               ],
             ),
           ),
@@ -75,7 +76,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileOption(IconData icon, String label) {
+  Widget _buildProfileOption(IconData icon, String label, BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
       child: ListTile(
@@ -83,7 +84,16 @@ class ProfilePage extends StatelessWidget {
         title: Text(label),
         trailing: Icon(Icons.arrow_forward_ios, color: Color(0xFFCBDCEB)),
         onTap: () {
-          // Handle navigation to respective page
+          if (label == "Edit Profile") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditProfilePage()),
+            );
+          } else if (label == "Logout") {
+            // Tambahkan logika logout di sini
+          } else if (label == "Certificates") {
+            // Tambahkan navigasi ke halaman sertifikasi jika diperlukan
+          }
         },
       ),
     );
