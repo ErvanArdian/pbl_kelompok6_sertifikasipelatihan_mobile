@@ -1,6 +1,61 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart'; // Pastikan untuk mengimpor halaman Home
+import 'my_courses_page.dart'; // Pastikan untuk mengimpor halaman My Courses
+import 'profile_page.dart'; // Pastikan untuk mengimpor halaman Profile
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchText = '';
+
+  // Daftar kursus yang tersedia
+  final List<Map<String, dynamic>> _courses = [
+    {
+      'title': 'Keamanan Siber dan Jaringan',
+      'level': 'Menengah',
+      'duration': '5 jam',
+      'rating': 4.7,
+      'enrolled': '8K Terdaftar',
+      'imagePath': 'assets/cyber.jpg',
+    },
+    {
+      'title': 'Data Science Tingkat Lanjut',
+      'level': 'Lanjutan',
+      'duration': '6 jam',
+      'rating': 4.8,
+      'enrolled': '8K Terdaftar',
+      'imagePath': 'assets/data_science.jpg',
+    },
+    {
+      'title': 'Pengembangan Game dengan Unity',
+      'level': 'Lanjutan',
+      'duration': '5 jam',
+      'rating': 4.7,
+      'enrolled': '5K Terdaftar',
+      'imagePath': 'assets/game.jpg',
+    },
+    {
+      'title': 'Kecerdasan Buatan dalam Teknologi Modern',
+      'level': 'Lanjutan',
+      'duration': '7 jam',
+      'rating': 4.9,
+      'enrolled': '12K Terdaftar',
+      'imagePath': 'assets/ai2.jpg',
+    },
+    {
+      'title': 'Analisis Data dan Visualisasi',
+      'level': 'Lanjutan',
+      'duration': '4.5 jam',
+      'rating': 4.6,
+      'enrolled': '10K Terdaftar',
+      'imagePath': 'assets/data_analyst.jpg',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,6 +69,12 @@ class SearchPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  _searchText = value.toLowerCase();
+                });
+              },
               decoration: InputDecoration(
                 hintText: 'What do you want to learn today?',
                 prefixIcon: Icon(Icons.search),
@@ -33,48 +94,17 @@ class SearchPage extends StatelessWidget {
             SizedBox(height: 10),
             Expanded(
               child: ListView(
-                children: [
-                  _buildCourseCard(
-                    'Keamanan Siber dan Jaringan',
-                    'Menengah',
-                    '5 jam',
-                    4.7,
-                    '8K Terdaftar',
-                    'assets/cyber.jpg', // Add path to your image assets
-                  ),
-                  _buildCourseCard(
-                    'Data Science Tingkat Lanjut',
-                    'Lanjutan',
-                    '6 jam',
-                    4.8,
-                    '8K Terdaftar',
-                    'assets/data_science.jpg',
-                  ),
-                  _buildCourseCard(
-                    'Pengembangan Game dengan Unity',
-                    'Lanjutan',
-                    '5 jam',
-                    4.7,
-                    '5K Terdaftar',
-                    'assets/game.jpg',
-                  ),
-                  _buildCourseCard(
-                    'Kecerdasan Buatan dalam Teknologi Modern',
-                    'Lanjutan',
-                    '7 jam',
-                    4.9,
-                    '12K Terdaftar',
-                    'assets/ai2.jpeg',
-                  ),
-                  _buildCourseCard(
-                    'Analisis Data dan Visualisasi',
-                    'Lanjutan',
-                    '4.5 jam',
-                    4.6,
-                    '10K Terdaftar',
-                    'assets/data_analyst.jpg',
-                  ),
-                ],
+                children: _courses
+                    .where((course) => course['title'].toLowerCase().contains(_searchText))
+                    .map((course) => _buildCourseCard(
+                          course['title'],
+                          course['level'],
+                          course['duration'],
+                          course['rating'],
+                          course['enrolled'],
+                          course['imagePath'],
+                        ))
+                    .toList(),
               ),
             ),
           ],
@@ -85,7 +115,29 @@ class SearchPage extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         currentIndex: 1, // Set to "Search" as the selected index
         onTap: (index) {
-          // Handle navigation
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage(username: '',)), // Ganti dengan HomePage Anda
+              );
+              break;
+            case 1:
+              // Do nothing, we are already on Search page
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyCoursesPage()), // Ganti dengan MyCoursesPage Anda
+              );
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage(username: 'User  ')), // Ganti dengan username yang sesuai
+              );
+              break;
+          }
         },
         items: [
           BottomNavigationBarItem(

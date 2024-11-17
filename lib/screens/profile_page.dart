@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'edit_profile_page.dart';
+import 'home_page.dart'; // Pastikan untuk mengimpor halaman Home
+import 'search_page.dart'; // Pastikan untuk mengimpor halaman Search
+import 'my_courses_page.dart'; // Pastikan untuk mengimpor halaman My Courses
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -54,6 +57,7 @@ class ProfilePage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color(0xFF133E87),
         unselectedItemColor: Colors.grey,
+        currentIndex: 3,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -72,6 +76,31 @@ class ProfilePage extends StatelessWidget {
             label: 'Profile',
           ),
         ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage(username: '',)), // Ganti dengan HomePage Anda
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage()), // Ganti dengan SearchPage Anda
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyCoursesPage()), // Ganti dengan MyCoursesPage Anda
+              );
+              break;
+            case 3:
+              // Do nothing, we are already on Profile page
+              break;
+          }
+        },
       ),
     );
   }

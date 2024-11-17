@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'search_page.dart';
+import 'profile_page.dart';
+import 'home_page.dart';
+import 'training_detail_page.dart';
 
 // Define color palette
 const Color lightBeige = Color(0xFFF3F3E0);
@@ -14,6 +18,7 @@ class MyCoursesPage extends StatefulWidget {
 class _MyCoursesPageState extends State<MyCoursesPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int _selectedIndex = 2; // Index untuk My Courses
 
   @override
   void initState() {
@@ -25,6 +30,32 @@ class _MyCoursesPageState extends State<MyCoursesPage>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage(username: '',)), // Ganti dengan HomePage Anda
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SearchPage()), // Ganti dengan SearchPage Anda
+        );
+        break;
+      case 2:
+        // Do nothing, we are already on My Courses page
+        break;
+      case 3:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage(username: '',)), // Ganti dengan ProfilePage Anda
+        );
+        break;
+    }
   }
 
   @override
@@ -41,8 +72,7 @@ class _MyCoursesPageState extends State<MyCoursesPage>
           ],
           indicatorColor: lightBeige, // Tab indicator color
           labelColor: Colors.white, // Color of the selected tab text
-          unselectedLabelColor:
-              lightGrayishBlue, // Color of the unselected tab text
+          unselectedLabelColor: lightGrayishBlue, // Color of the unselected tab text
         ),
       ),
       body: TabBarView(
@@ -51,6 +81,31 @@ class _MyCoursesPageState extends State<MyCoursesPage>
           PengajuanTab(),
           PelatihanTab(),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: deepBlue,
+        unselectedItemColor: lightGrayishBlue,
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'My Courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -131,7 +186,17 @@ class PelatihanTab extends StatelessWidget {
               color: deepBlue,
             ),
             onTap: () {
-              // Add action on tap if necessary
+              // Navigate to the Training Detail Page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrainingDetailPage(
+                    title: 'Pelatihan ${index + 1}',
+                    status: 'Sedang Berlangsung',
+                    description: 'Detail mengenai Pelatihan ${index + 1} akan ditampilkan di sini.',
+                  ),
+                ),
+              );
             },
           ),
         );
