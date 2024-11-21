@@ -158,7 +158,7 @@ class PelatihanTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.all(10), // Add padding around the ListView
-      itemCount: 5, // Replace with the actual count of Pelatihan
+      itemCount: 1, // Update to 1 for the AI Training Program
       itemBuilder: (context, index) {
         return Card(
           color: lightGrayishBlue, // Card background color
@@ -170,7 +170,7 @@ class PelatihanTab extends StatelessWidget {
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16), // Padding inside the card
             title: Text(
-              'Pelatihan ${index + 1}',
+              'AI Training Program',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class PelatihanTab extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              'Status: Sedang Berlangsung',
+              'Status: Bejalan',
               style: TextStyle(color: lightBlue),
             ),
             trailing: Icon(
@@ -191,9 +191,20 @@ class PelatihanTab extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => TrainingDetailPage(
-                    title: 'Pelatihan ${index + 1}',
-                    status: 'Sedang Berlangsung',
-                    description: 'Detail mengenai Pelatihan ${index + 1} akan ditampilkan di sini.',
+                    title: 'AI Training Program',
+                    status: 'Berjalan',
+                    description: 'Pelatihan ini dirancang untuk memberikan pemahaman mendalam tentang konsep dasar kecerdasan buatan (AI) dan aplikasinya dalam berbagai industri.',
+                    date: 'Januari 2024',
+                    location: 'JL. Suekarno Hatta',
+                    cost: 'RP 1.000.000',
+                    quota: '50 Peserta',
+                    materials: [
+                      'Pengenalan Kecerdasan Buatan',
+                      'Algoritma Machine Learning',
+                      'Deep Learning dan Jaringan Saraf Tiruan',
+                      'Studi Kasus dan Proyek Praktis',
+                    ],
+                    speaker: 'Dr. budi arie, Ahli Kecerdasan Buatan dengan pengalaman lebih dari 10 tahun di industri.',
                   ),
                 ),
               );

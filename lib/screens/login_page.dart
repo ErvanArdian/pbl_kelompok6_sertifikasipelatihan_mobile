@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final Color darkBlue = Color(0xFF133E87);          // 133E87
 
   void _login() {
-    if (usernameController.text == 'admin' && passwordController.text == 'admin123') {
+    if (usernameController.text == 'dosen' && passwordController.text == 'dosen123') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage(username: usernameController.text)),
