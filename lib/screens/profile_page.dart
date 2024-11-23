@@ -3,6 +3,7 @@ import 'edit_profile_page.dart';
 import 'home_page.dart'; // Pastikan untuk mengimpor halaman Home
 import 'search_page.dart'; // Pastikan untuk mengimpor halaman Search
 import 'my_courses_page.dart'; // Pastikan untuk mengimpor halaman My Courses
+import 'certificates_page.dart'; // Import halaman sertifikat
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -39,7 +40,7 @@ class ProfilePage extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 20),
               children: [
-                _buildProfileOption(Icons.article, "Certificates", context),
+                _buildProfileOption(Icons.article, "Sertifikat", context),
                 _buildProfileOption(Icons.edit, "Edit Profile", context),
                 _buildProfileOption(Icons.logout, "Logout", context),
               ],
@@ -120,8 +121,12 @@ class ProfilePage extends StatelessWidget {
             );
           } else if (label == "Logout") {
             // Tambahkan logika logout di sini
-          } else if (label == "Certificates") {
-            // Tambahkan navigasi ke halaman sertifikasi jika diperlukan
+          } else if (label == "Sertifikat") {
+            // Navigasi ke halaman sertifikat
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CertificatesPage()),
+            );
           }
         },
       ),
