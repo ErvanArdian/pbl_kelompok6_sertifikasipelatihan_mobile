@@ -19,7 +19,7 @@ class CertificatesPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UploadCertificatePage()),
+                  MaterialPageRoute(builder: (context) => UploadSertifikatPage()),
                 );
               },
               child: Text('Unggah Sertifikat'),

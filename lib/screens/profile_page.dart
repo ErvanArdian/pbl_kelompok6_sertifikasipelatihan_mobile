@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'edit_profile_page.dart';
 import 'home_page.dart'; // Pastikan untuk mengimpor halaman Home
+import 'login_page.dart';
 import 'search_page.dart'; // Pastikan untuk mengimpor halaman Search
 import 'my_courses_page.dart'; // Pastikan untuk mengimpor halaman My Courses
 import 'certificates_page.dart'; // Import halaman sertifikat
@@ -121,6 +122,10 @@ class ProfilePage extends StatelessWidget {
             );
           } else if (label == "Logout") {
             // Tambahkan logika logout di sini
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
           } else if (label == "Sertifikat") {
             // Navigasi ke halaman sertifikat
             Navigator.push(

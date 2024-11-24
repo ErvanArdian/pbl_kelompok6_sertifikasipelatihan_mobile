@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 
 // Define color palette
@@ -9,173 +7,154 @@ const Color deepBlue = Color(0xFF133E87);
 const Color lightBlue = Color(0xFF608BC1);
 const Color lightGrayishBlue = Color(0xFFCBDCEB);
 
-class UploadCertificatePage extends StatefulWidget {
+class UploadSertifikatPage extends StatefulWidget {
   @override
-  _UploadCertificatePageState createState() => _UploadCertificatePageState();
+  _UploadSertifikatPageState createState() => _UploadSertifikatPageState();
 }
 
-class _UploadCertificatePageState extends State<UploadCertificatePage> {
-  File? _certificateFile;
+class _UploadSertifikatPageState extends State<UploadSertifikatPage> {
+  final _formKey = GlobalKey<FormState>();
+  String? jenisSertifikat;
+  String? namaSertifikat;
+  String? noSertifikat;
+  DateTime? tanggalTerbit;
+  DateTime? masaBerlaku;
+  String? tahunPeriode;
+  String? penyelenggara;
+  String? filePath;
 
-  Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _certificateFile = File(pickedFile.path);
-      });
-    }
-  }
-
-  Future<void> _pickFile() async {
-    // Memilih file PDF
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+  void _uploadFile() async {
+    String? selectedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+    ).then((result) {
+      if (result != null) {
+        return result.files.single.path;
+      }
+      return null;
+    });
 
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        _certificateFile = File(result.files.single.path!);
-      });
-    }
-  }
-
-  void _uploadCertificate() {
-    if (_certificateFile != null) {
-      // Logika untuk mengunggah sertifikat ke server atau menyimpannya
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sertifikat berhasil diunggah!')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Silakan pilih sertifikat terlebih dahulu.')),
-      );
-    }
+    setState(() {
+      filePath = selectedFile;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Unggah Sertifikat'),
-        backgroundColor: deepBlue,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            color: lightBeige, // Set background color
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Unggah Sertifikat',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: deepBlue, // Set text color
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: 250,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: lightGrayishBlue,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _certificateFile != null
-                          ? Image.file(
-                              _certificateFile!,
-                              height: 150,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            )
-                          : Icon(
-                              Icons.cloud_upload,
-                              size: 50,
-                              color: lightBlue, // Set icon color
-                            ),
-                      SizedBox(height: 10),
-                      Text(
-                        _certificateFile != null
-                            ? 'Sertifikat siap diunggah'
-                            : 'Unggah berkas disini',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          color: deepBlue, // Set text color
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _pickImage,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: deepBlue, // Set button color
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 12,
-                          ),
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: Text('Pilih Gambar'),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _pickFile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: deepBlue, // Set button color
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 12,
-                          ),
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: Text('Pilih PDF'),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _uploadCertificate,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: deepBlue, // Set button color
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 12,
-                          ),
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: Text('Simpan'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(title: Text('Upload Sertifikat')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              _buildCard(
+                label: 'Jenis Sertifikat',
+                onSaved: (value) {
+                  jenisSertifikat = value;
+                },
+              ),
+              _buildCard(
+                label: 'Nama Sertifikat',
+                onSaved: (value) {
+                  namaSertifikat = value;
+                },
+              ),
+              _buildCard(
+                label: 'No Sertifikat',
+                onSaved: (value) {
+                  noSertifikat = value;
+                },
+              ),
+              _buildDateCard(
+                label: 'Tanggal Terbit',
+                onDateSelected: (pickedDate) {
+                  setState(() {
+                    tanggalTerbit = pickedDate;
+                  });
+                },
+                date: tanggalTerbit,
+              ),
+              _buildDateCard(
+                label: 'Masa Berlaku',
+                onDateSelected: (pickedDate) {
+                  setState(() {
+                    masaBerlaku = pickedDate;
+                  });
+                },
+                date: masaBerlaku,
+              ),
+              _buildCard(
+                label: 'Tahun Periode',
+                onSaved: (value) {
+                  tahunPeriode = value;
+                },
+              ),
+              _buildCard(
+                label: 'Penyelenggara',
+                onSaved: (value) {
+                  penyelenggara = value;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _uploadFile,
+                child: Text('Upload Dokumen Sertifikat'),
+              ),
+              if (filePath != null) Text('File yang diunggah: $filePath'),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    // Proses penyimpanan data sertifikat di sini
+                  }
+                },
+                child: Text('Simpan Data Sertifikat'),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard({required String label, required Function(String?)? onSaved}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
+          decoration: InputDecoration(labelText: label),
+          onSaved: onSaved,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateCard({required String label, required Function(DateTime?) onDateSelected, DateTime? date}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
+          decoration: InputDecoration(labelText: label),
+          readOnly: true,
+          controller: TextEditingController(
+            text: date != null ? "${date.day}/${date.month}/${date.year}" : "",
+          ),
+          onTap: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2101),
+            );
+            if (pickedDate != null) {
+              onDateSelected(pickedDate);
+            }
+          },
         ),
       ),
     );
