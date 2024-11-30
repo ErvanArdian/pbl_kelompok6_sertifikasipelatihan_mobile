@@ -2,23 +2,36 @@ import 'package:flutter/material.dart';
 import 'search_page.dart';
 import 'my_courses_page.dart';
 import 'profile_page.dart';
+import 'notifications_page.dart'; // Import the notifications page
 import 'training_category_page.dart'; // Import the category pages
 
 class HomePage extends StatelessWidget {
   final String username;
+  final int totalPelatihan = 5; // Contoh data total pelatihan
+  final int totalSertifikasi = 3; // Contoh data total sertifikasi
 
   HomePage({required this.username});
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF133E87),
         title: Text('Home', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NotificationsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
-        // Wrap with SingleChildScrollView to enable scrolling
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,8 +45,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-
-            // Benefits Section
             Text(
               'Tingkatkan kemampuan untuk terus berkembang bersama JTI Polinema!',
               style: TextStyle(
@@ -42,6 +53,31 @@ class HomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
+            // Ringkasan Section
+            Text(
+              'Ringkasan:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF133E87),
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Total Pelatihan yang Diikuti: $totalPelatihan',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xFF133E87),
+              ),
+            ),
+            Text(
+              'Total Sertifikasi: $totalSertifikasi',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xFF133E87),
+              ),
+            ),
+            SizedBox(height: 20),
             Wrap(
               spacing: 16,
               runSpacing: 16,
@@ -51,8 +87,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20),
-
-            // Explore Courses Section
             Text(
               'Bidang Minat',
               style: TextStyle(
@@ -62,15 +96,12 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            // Course Category Grid
             GridView.count(
-              shrinkWrap:
-                  true, // Make grid view take up only the space it needs
+              shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              physics:
-                  NeverScrollableScrollPhysics(), // Disable scrolling inside the GridView
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 courseCard(
                     'AI and Machine Learning', 51, Icons.android, context),
@@ -82,7 +113,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      // Bottom Navigation
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Color(0xFF133E87),
@@ -133,7 +163,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Benefit Item Widget
   Widget benefitItem(
       IconData icon, Color color, String label, BuildContext context) {
     return GestureDetector(
@@ -145,7 +174,6 @@ class HomePage extends StatelessWidget {
                   builder: (context) =>
                       TrainingCategoryPage(categoryName: 'Pelatihan')));
         }
-        // Handle other categories here if necessary
       },
       child: Row(
         children: [
@@ -157,7 +185,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Course Item Widget
   Widget courseCard(
       String title, int courses, IconData icon, BuildContext context) {
     return GestureDetector(

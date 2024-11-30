@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'upload_certificate_page.dart'; // Import halaman unggah sertifikat
+import 'package:provider/provider.dart';
+import '../providers/certificate_provider.dart';
+import 'upload_certificate_page.dart';
+import 'certificate_detail_page.dart';
 
 class CertificatesPage extends StatelessWidget {
   @override
@@ -9,23 +12,43 @@ class CertificatesPage extends StatelessWidget {
         title: Text('Sertifikat'),
         backgroundColor: Color(0xFF133E87),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Daftar Sertifikat Anda'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadSertifikatPage()),
-                );
-              },
-              child: Text('Unggah Sertifikat'),
-            ),
-          ],
-        ),
+      body: Consumer<CertificateProvider>(
+        builder: (context, certificateProvider, child) {
+          return Column(
+            children: [
+              Text('Daftar Sertifikat Anda'),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: certificateProvider.certificates.length,
+                  itemBuilder: (context, index) {
+                    final certificate = certificateProvider.certificates[index];
+                    return ListTile(
+                      title: Text(certificate.namaSertifikat),
+                      subtitle: Text('No: ${certificate.noSertifikat}'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CertificateDetailPage(certificate: certificate),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UploadSertifikatPage()),
+                  );
+                },
+                child: Text('Unggah Sertifikat'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
