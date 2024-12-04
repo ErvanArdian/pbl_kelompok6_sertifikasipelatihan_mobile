@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
-
-// Define color palette
-const Color lightBeige = Color(0xFFF3F3E0);
-const Color deepBlue = Color(0xFF133E87);
-const Color lightBlue = Color(0xFF608BC1);
-const Color lightGrayishBlue = Color(0xFFCBDCEB);
+import '../models/certificate.dart';
+import '../providers/certificate_provider.dart';
 
 class UploadSertifikatPage extends StatefulWidget {
   @override
@@ -108,7 +105,20 @@ class _UploadSertifikatPageState extends State<UploadSertifikatPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Proses penyimpanan data sertifikat di sini
+                    final newCertificate = Certificate(
+                      jenisSertifikat: jenisSertifikat!,
+                      namaSertifikat: namaSertifikat!,
+                      noSertifikat: noSertifikat!,
+                      tanggalTerbit: tanggalTerbit!,
+                      masaBerlaku: masaBerlaku!,
+                      tahunPeriode: tahunPeriode!,
+                      penyelenggara: penyelenggara!,
+                      filePath: filePath!,
+                    );
+
+                    Provider.of<CertificateProvider>(context, listen: false)
+                        .addCertificate(newCertificate);
+                    Navigator.pop(context);
                   }
                 },
                 child: Text('Simpan Data Sertifikat'),
