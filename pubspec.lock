@@ -69,18 +69,18 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: be325344c1f3070354a1d84a231a1ba75ea85d413774ec4bdf444c023342e030
+      sha256: "16dc141db5a2ccc6520ebb6a2eb5945b1b09e95085c021d9f914f8ded7f1465c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0"
+    version: "8.1.4"
   file_selector_linux:
     dependency: transitive
     description:
       name: file_selector_linux
-      sha256: b2b91daf8a68ecfa4a01b778a6f52edef9b14ecd506e771488ea0f2e0784198b
+      sha256: "54cbbd957e1156d29548c7d9b9ec0c0ebb6de0a90452198683a7d23aed617a33"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.3+1"
+    version: "0.9.3+2"
   file_selector_macos:
     dependency: transitive
     description:
@@ -164,10 +164,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "8faba09ba361d4b246dc0a17cb4289b3324c2b9f6db7b3d457ee69106a86bd32"
+      sha256: fa8141602fde3f7e2f81dbf043613eb44dfa325fa0bcf93c0f142c9f7a2c193e
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.12+17"
+    version: "0.8.12+18"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -280,6 +280,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -296,6 +304,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -385,10 +401,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "84ba388638ed7a8cb3445a320c8273136ab2631cd5f2c57888335504ddab1bc2"
+      sha256: "8b338d4486ab3fbc0ba0db9f9b4f5239b6697fcee427939a40e720cbb9ee0a69"
       url: "https://pub.dev"
     source: hosted
-    version: "5.8.0"
+    version: "5.9.0"
 sdks:
   dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.24.0"
