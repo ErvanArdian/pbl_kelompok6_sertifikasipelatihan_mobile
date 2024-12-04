@@ -30,7 +30,7 @@ class LandingPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
-                      'assets/training.jpg',
+                      'assets/logojti.jpg',
                       height: 150,
                       width: 150,
                       fit: BoxFit.cover,
@@ -46,7 +46,8 @@ class LandingPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFFCBDCEB), // Light blue text color (CBDCEB)
+                      color: const Color(
+                          0xFFCBDCEB), // Light blue text color (CBDCEB)
                       shadows: [
                         Shadow(
                           blurRadius: 6.0,
@@ -56,7 +57,8 @@ class LandingPage extends StatelessWidget {
                       ],
                     ),
                     children: const [
-                      TextSpan(text: 'Pelatihan & Sertifikasi JTI\nPolinema'),
+                      TextSpan(text: 'SkillHub TI\n'),
+                      TextSpan(text: 'Sistem Pelatihan & Sertifikasi'),
                     ],
                   ),
                 ),
@@ -65,9 +67,12 @@ class LandingPage extends StatelessWidget {
                 // Start button with shadow and rounded corners
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: const Color(0xFFF3F3E0), // Light background color (F3F3E0)
-                    backgroundColor: const Color(0xFF608BC1), // Medium blue background (608BC1)
-                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                    foregroundColor: const Color(
+                        0xFFF3F3E0), // Light background color (F3F3E0)
+                    backgroundColor: const Color(
+                        0xFF608BC1), // Medium blue background (608BC1)
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -89,7 +94,7 @@ class LandingPage extends StatelessWidget {
 
                 // Additional call-to-action text
                 const Text(
-                  'Kelola pelatihan dan sertifikasi Anda dengan mudah!',
+                  'Kelola pelatihan dan sertifikasi Anda dengan mudah!\n Jurusan Teknologi Informasi\n Politeknik Negeri Malang',
                   style: TextStyle(
                     fontSize: 15,
                     color: Color(0xFFCBDCEB), // Light blue text color (CBDCEB)

@@ -11,19 +11,21 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   String errorMessage = '';
-  bool _obscureText = true;  // To toggle password visibility
+  bool _obscureText = true; // To toggle password visibility
 
   // Colors based on the provided color palette
-  final Color lightBackground = Color(0xFFF3F3E0);  // F3F3E0
-  final Color lightBlue = Color(0xFFCBDCEB);         // CBDCEB
-  final Color mediumBlue = Color(0xFF608BC1);        // 608BC1
-  final Color darkBlue = Color(0xFF133E87);          // 133E87
+  final Color lightBackground = Color(0xFFF3F3E0); // F3F3E0
+  final Color lightBlue = Color(0xFFCBDCEB); // CBDCEB
+  final Color mediumBlue = Color(0xFF608BC1); // 608BC1
+  final Color darkBlue = Color(0xFF133E87); // 133E87
 
   void _login() {
-    if (usernameController.text == 'dosen' && passwordController.text == 'dosen123') {
+    if (usernameController.text == 'dosen' &&
+        passwordController.text == 'dosen123') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(username: usernameController.text)),
+        MaterialPageRoute(
+            builder: (context) => HomePage(username: usernameController.text)),
       );
     } else {
       setState(() {
@@ -44,8 +46,31 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Welcome text
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'assets/logojti.jpg',
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+
               Text(
-                'Selamat Datang Kembali!',
+                'SkillHub TI',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -61,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 40),
 
-              // Username input
+              // Username input with rounded corners
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
@@ -69,15 +94,22 @@ class _LoginPageState extends State<LoginPage> {
                   labelStyle: TextStyle(color: mediumBlue),
                   filled: true,
                   fillColor: lightBackground,
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                     borderSide: BorderSide(color: mediumBlue),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.person, // Icon for the username field
+                    color: mediumBlue,
                   ),
                 ),
               ),
               SizedBox(height: 16),
 
-              // Password input with visibility toggle
+              // Password input with rounded corners and visibility toggle
               TextField(
                 controller: passwordController,
                 obscureText: _obscureText,
@@ -86,9 +118,16 @@ class _LoginPageState extends State<LoginPage> {
                   labelStyle: TextStyle(color: mediumBlue),
                   filled: true,
                   fillColor: lightBackground,
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                     borderSide: BorderSide(color: mediumBlue),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock, // Icon for the password field
+                    color: mediumBlue,
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
