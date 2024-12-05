@@ -8,23 +8,25 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   String errorMessage = '';
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
   // Colors based on the provided color palette
-  final Color lightBackground = Color(0xFFF3F3E0);  // F3F3E0
-  final Color lightBlue = Color(0xFFCBDCEB);         // CBDCEB
-  final Color mediumBlue = Color(0xFF608BC1);        // 608BC1
-  final Color darkBlue = Color(0xFF133E87);          // 133E87
+  final Color lightBackground = Color(0xFFF3F3E0); // F3F3E0
+  final Color lightBlue = Color(0xFFCBDCEB); // CBDCEB
+  final Color mediumBlue = Color(0xFF608BC1); // 608BC1
+  final Color darkBlue = Color(0xFF133E87); // 133E87
 
   void _register() {
     if (usernameController.text.isEmpty ||
         passwordController.text.isEmpty ||
         confirmPasswordController.text.isEmpty) {
       setState(() {
-        errorMessage = 'Username, password, and confirm password must be filled out';
+        errorMessage =
+            'Username, password, and confirm password must be filled out';
       });
     } else if (passwordController.text != confirmPasswordController.text) {
       setState(() {
@@ -44,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: mediumBlue,
         title: const Text('Register'),
         centerTitle: true,
-        automaticallyImplyLeading: true,  // To show the back button
+        automaticallyImplyLeading: true, // To show the back button
       ),
       body: Center(
         child: Padding(
@@ -53,6 +55,38 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'assets/logojti.jpg',
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Text(
+                'SkillHub TI',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: lightBackground,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 8),
               // Username input
               TextField(
                 controller: usernameController,
@@ -61,9 +95,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   labelStyle: TextStyle(color: mediumBlue),
                   filled: true,
                   fillColor: lightBackground,
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                     borderSide: BorderSide(color: mediumBlue),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.person, // Icon for the username field
+                    color: mediumBlue,
                   ),
                 ),
               ),
@@ -78,13 +119,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   labelStyle: TextStyle(color: mediumBlue),
                   filled: true,
                   fillColor: lightBackground,
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                     borderSide: BorderSide(color: mediumBlue),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock, // Icon for the password field
+                    color: mediumBlue,
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: mediumBlue,
                     ),
                     onPressed: () {
@@ -106,13 +156,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   labelStyle: TextStyle(color: mediumBlue),
                   filled: true,
                   fillColor: lightBackground,
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                     borderSide: BorderSide(color: mediumBlue),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock, // Icon for the password field
+                    color: mediumBlue,
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                      _obscureConfirmPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: mediumBlue,
                     ),
                     onPressed: () {
