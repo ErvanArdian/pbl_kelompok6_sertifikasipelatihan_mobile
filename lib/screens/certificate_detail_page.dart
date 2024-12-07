@@ -36,8 +36,7 @@ class CertificateDetailPage extends StatelessWidget {
               SizedBox(height: 10),
               Text('Penyelenggara: ${certificate.penyelenggara}'),
               SizedBox(height: 20),
-              if (certificate.filePath != null) 
-                Text('File: ${certificate.filePath}'),
+              Text('File: ${certificate.filePath}'),
             ],
           ),
         ),

@@ -1,12 +1,12 @@
 class Certificate {
-  final String jenisSertifikat;
-  final String namaSertifikat;
-  final String noSertifikat;
-  final DateTime tanggalTerbit;
-  final DateTime masaBerlaku;
-  final String tahunPeriode;
-  final String penyelenggara;
-  final String? filePath; // Properti ini bisa null
+  String jenisSertifikat;
+  String namaSertifikat;
+  String noSertifikat;
+  DateTime tanggalTerbit;
+  DateTime masaBerlaku;
+  String tahunPeriode;
+  String penyelenggara;
+  String filePath;
 
   Certificate({
     required this.jenisSertifikat,
@@ -16,6 +16,6 @@ class Certificate {
     required this.masaBerlaku,
     required this.tahunPeriode,
     required this.penyelenggara,
-    this.filePath, // Properti ini bisa null
+    required this.filePath,
   });
 }

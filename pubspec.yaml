@@ -10,11 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^1.1.2
-<<<<<<< HEAD
   file_picker: ^8.1.4
-=======
-  file_picker: ^5.2.0
->>>>>>> c6bb396a77ee5303e08d5b43c926946fe88f6fbd
+  
   provider: ^6.0.3
 
 dev_dependencies:
@@ -32,3 +29,4 @@ flutter:
   - assets/game.jpg
   - assets/ai2.jpg
   - assets/data_analyst.jpg
+  - assets/logojti.jpg

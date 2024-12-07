@@ -66,12 +66,12 @@ class ProfilePage extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.library_books),
             label: 'My Courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -89,13 +89,13 @@ class ProfilePage extends StatelessWidget {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => SearchPage()), // Ganti dengan SearchPage Anda
+                MaterialPageRoute(builder: (context) => MyCoursesPage()), // Ganti dengan MyCoursesPage Anda
               );
               break;
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => MyCoursesPage()), // Ganti dengan MyCoursesPage Anda
+                MaterialPageRoute(builder: (context) => SearchPage()), // Ganti dengan SearchPage Anda
               );
               break;
             case 3:

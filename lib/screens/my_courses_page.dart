@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'search_page.dart';
-import 'profile_page.dart';
-import 'home_page.dart';
+import 'package:provider/provider.dart';
 import 'training_detail_page.dart';
+import '../providers/certificate_provider.dart';
+import 'upload_certificate_page.dart';
+import 'certificate_detail_page.dart';
 
 // Define color palette
 const Color lightBeige = Color(0xFFF3F3E0);
@@ -18,8 +19,7 @@ class MyCoursesPage extends StatefulWidget {
 class _MyCoursesPageState extends State<MyCoursesPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedIndex = 2; // Index untuk My Courses
-
+  
   @override
   void initState() {
     super.initState();
@@ -32,143 +32,112 @@ class _MyCoursesPageState extends State<MyCoursesPage>
     super.dispose();
   }
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage(username: '',)), // Ganti dengan HomePage Anda
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SearchPage()), // Ganti dengan SearchPage Anda
-        );
-        break;
-      case 2:
-        // Do nothing, we are already on My Courses page
-        break;
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilePage(username: '',)), // Ganti dengan ProfilePage Anda
-        );
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Courses', style: TextStyle(color: Colors.white)),
-        backgroundColor: deepBlue,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: 'Pengajuan'),
-            Tab(text: 'Pelatihan'),
-          ],
-          indicatorColor: lightBeige, // Tab indicator color
-          labelColor: Colors.white, // Color of the selected tab text
-          unselectedLabelColor: lightGrayishBlue, // Color of the unselected tab text
-        ),
-      ),
+      // Remove the AppBar and BottomNavigationBar
       body: TabBarView(
         controller: _tabController,
         children: [
-          PengajuanTab(),
-          PelatihanTab(),
+          _buildSertifikasiTab(),
+          _buildPelatihanTab(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: deepBlue,
-        unselectedItemColor: lightGrayishBlue,
-        currentIndex: _selectedIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'My Courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        onTap: _onItemTapped,
-      ),
+      floatingActionButton: _tabController.index == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UploadSertifikatPage()),
+                );
+              },
+              backgroundColor: deepBlue,
+              child: Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
-}
 
-class PengajuanTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.all(10), // Add padding around the ListView
-      itemCount: 5, // Replace with the actual count of Pengajuan
-      itemBuilder: (context, index) {
-        return Card(
-          color: lightGrayishBlue, // Card background color
-          elevation: 4.0, // Card shadow for elevation
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners for card
-          ),
-          margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0), // Horizontal and vertical margins between cards
-          child: ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16), // Padding inside the card
-            title: Text(
-              'Pengajuan Pelatihan ${index + 1}',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: deepBlue,
+  Widget _buildSertifikasiTab() {
+    return Consumer<CertificateProvider>(
+      builder: (context, certificateProvider, child) {
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Daftar Sertifikat Anda',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: deepBlue,
+                ),
               ),
             ),
-            subtitle: Text(
-              'Status: Menunggu Persetujuan',
-              style: TextStyle(color: lightBlue),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(10),
+                itemCount: certificateProvider.certificates.length,
+                itemBuilder: (context, index) {
+                  final certificate = certificateProvider.certificates[index];
+                  return Card(
+                    color: lightGrayishBlue,
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      title: Text(
+                        certificate.namaSertifikat,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: deepBlue,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'No: ${certificate.noSertifikat}',
+                        style: TextStyle(color: lightBlue),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: deepBlue,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CertificateDetailPage(certificate: certificate),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: deepBlue,
-            ),
-            onTap: () {
-              // Add action on tap if necessary
-            },
-          ),
+          ],
         );
       },
     );
   }
-}
 
-class PelatihanTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPelatihanTab() {
     return ListView.builder(
-      padding: EdgeInsets.all(10), // Add padding around the ListView
+      padding: EdgeInsets.all(10),
       itemCount: 1, // Update to 1 for the AI Training Program
       itemBuilder: (context, index) {
         return Card(
-          color: lightGrayishBlue, // Card background color
-          elevation: 4.0, // Card shadow for elevation
+          color: lightGrayishBlue,
+          elevation: 4.0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners for card
+            borderRadius: BorderRadius.circular(12),
           ),
-          margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0), // Horizontal and vertical margins between cards
+          margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
           child: ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16), // Padding inside the card
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             title: Text(
               'AI Training Program',
               style: TextStyle(
@@ -178,7 +147,7 @@ class PelatihanTab extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              'Status: Bejalan',
+              'Status: Berjalan',
               style: TextStyle(color: lightBlue),
             ),
             trailing: Icon(
@@ -186,7 +155,6 @@ class PelatihanTab extends StatelessWidget {
               color: deepBlue,
             ),
             onTap: () {
-              // Navigate to the Training Detail Page
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -204,7 +172,7 @@ class PelatihanTab extends StatelessWidget {
                       'Deep Learning dan Jaringan Saraf Tiruan',
                       'Studi Kasus dan Proyek Praktis',
                     ],
-                    speaker: 'Dr. budi arie, Ahli Kecerdasan Buatan dengan pengalaman lebih dari 10 tahun di industri.',
+                    speaker: 'Dr. Budi Arie, Ahli Kecerdasan Buatan dengan pengalaman lebih dari 10 tahun di industri.',
                   ),
                 ),
               );

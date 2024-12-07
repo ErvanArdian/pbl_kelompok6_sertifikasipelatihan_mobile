@@ -1,199 +1,236 @@
 import 'package:flutter/material.dart';
-import 'search_page.dart';
 import 'my_courses_page.dart';
 import 'profile_page.dart';
-import 'notifications_page.dart'; // Import the notifications page
-import 'training_category_page.dart'; // Import the category pages
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final String username;
-  final int totalPelatihan = 5; // Contoh data total pelatihan
-  final int totalSertifikasi = 3; // Contoh data total sertifikasi
+  final int totalPelatihan;
+  final int totalSertifikasi;
 
-  HomePage({required this.username});
+  HomePage({
+    required this.username,
+    this.totalPelatihan = 5,
+    this.totalSertifikasi = 3,
+  });
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+
+  // Daftar halaman untuk masing-masing item navigation bar
+  final List<Widget> _pages = [
+    Center(
+      child: Text('Home Page'), // Placeholder halaman Home
+    ),
+    MyCoursesPage(),
+    ProfilePage(username: ''),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF133E87),
-        title: Text('Home', style: TextStyle(color: Colors.white)),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => NotificationsPage()),
-              );
-            },
+      appBar: _buildAppBar(),
+      body: _currentIndex == 0
+          ? _buildHomeContent() // Konten Home khusus
+          : _pages[_currentIndex],
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Color(0xFF133E87),
+      elevation: 0,
+      automaticallyImplyLeading: false, // This removes the back button
+      title: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hello,',
+                style: TextStyle(fontSize: 16, color: Colors.white70),
+              ),
+              Text(
+                'Hi ${widget.username}',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Spacer(),
+          Row(
+            children: [
+              Text(
+                'SkillHub TI',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              Image.asset(
+                'assets/logojti.jpg', // Replace with the correct path of your image
+                height: 30, // Set the size of the logo as needed
+                width: 30, // Set the size of the logo as needed
+              ),
+              SizedBox(width: 8),
+            ],
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hi, $username!',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF133E87),
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Tingkatkan kemampuan untuk terus berkembang bersama JTI Polinema!',
-              style: TextStyle(
-                  color: Color(0xFF133E87),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            // Ringkasan Section
-            Text(
-              'Ringkasan:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF133E87),
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Total Pelatihan yang Diikuti: $totalPelatihan',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xFF133E87),
-              ),
-            ),
-            Text(
-              'Total Sertifikasi: $totalSertifikasi',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xFF133E87),
-              ),
-            ),
-            SizedBox(height: 20),
-            Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: [
-                benefitItem(Icons.school, Colors.blue, 'Pelatihan', context),
-                benefitItem(Icons.rocket, Colors.pink, 'Sertifikasi', context),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Bidang Minat',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF133E87),
-              ),
-            ),
-            SizedBox(height: 10),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                courseCard(
-                    'AI and Machine Learning', 51, Icons.android, context),
-                courseCard('Cyber Security', 17, Icons.shield, context),
-                courseCard('Data Science', 85, Icons.bar_chart, context),
-                courseCard('Cloud Computing', 42, Icons.cloud, context),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xFF133E87),
-        unselectedItemColor: Color(0xFFCBDCEB),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'My Courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomePage(username: username)));
-              break;
-            case 1:
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchPage()));
-              break;
-            case 2:
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyCoursesPage()));
-              break;
-            case 3:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProfilePage(username: username)));
-              break;
-          }
-        },
       ),
     );
   }
 
-  Widget benefitItem(
-      IconData icon, Color color, String label, BuildContext context) {
+  Widget _buildHomeContent() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildUserCard(),
+          SizedBox(height: 20),
+          Text(
+            'Explore Features',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF133E87),
+            ),
+          ),
+          SizedBox(height: 10),
+          GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              courseCard('Sertifikasi Aktif', 3, Icons.check_circle, context),
+              courseCard('Pelatihan Selesai', 5, Icons.check, context),
+              courseCard('Sertifikasi Tidak Berlaku', 1, Icons.cancel, context),
+              courseCard('Pelatihan Akan Dijalani', 2, Icons.schedule, context),
+            ],
+          ),
+          // Tambahkan konten lainnya sesuai kebutuhan
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserCard() {
     return GestureDetector(
       onTap: () {
-        if (label == 'Pelatihan') {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      TrainingCategoryPage(categoryName: 'Pelatihan')));
-        }
+        // Navigate to ProfilePage when the card is clicked
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfilePage(username: widget.username)),
+        );
       },
-      child: Row(
-        children: [
-          Icon(icon, color: color),
-          SizedBox(width: 8),
-          Text(label, style: TextStyle(color: Colors.grey[700])),
-        ],
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Color(0xFF608BC1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, size: 30, color: Color(0xFF608BC1)),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${widget.username}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // Uncomment and add other details if needed
+                    // Text(
+                    //   '43527*',
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 14,
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: Colors.white),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        border: Border.all(color: Color(0xFF608BC1), width: 1),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Color(0xFF133E87),
+          elevation: 0,
+          currentIndex: _currentIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Color(0xFFCBDCEB),
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.library_books),
+              label: 'My Courses',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index; // Change the active page index
+            });
+          },
+        ),
       ),
     );
   }
 
   Widget courseCard(
-      String title, int courses, IconData icon, BuildContext context) {
+      String title, int count, IconData icon, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TrainingCategoryPage(categoryName: title)),
-        );
+        // Do nothing on tap as navigation to TrainingCategoryPage is not required
       },
       child: Card(
         elevation: 4,
@@ -212,7 +249,7 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 4),
-              Text('$courses courses',
+              Text('$count',
                   style: TextStyle(color: Color(0xFF608BC1), fontSize: 12)),
             ],
           ),
