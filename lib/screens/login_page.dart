@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'home_page.dart';
 import 'register_page.dart';
 
@@ -8,6 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final Dio dio = Dio();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   String errorMessage = '';
@@ -19,18 +21,96 @@ class _LoginPageState extends State<LoginPage> {
   final Color mediumBlue = Color(0xFF608BC1); // 608BC1
   final Color darkBlue = Color(0xFF133E87); // 133E87
 
-  void _login() {
-    if (usernameController.text == 'dosen' &&
-        passwordController.text == 'dosen123') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(username: usernameController.text)),
-      );
-    } else {
-      setState(() {
-        errorMessage = 'Username atau password salah';
+  final String urlLogin = "http://192.168.65.82:8000/api/login"; // Additional API URL
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void showLoginResultDialog(BuildContext context, String message, bool isSuccess, String? levelId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            isSuccess ? 'Login Berhasil' : 'Login Gagal',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: isSuccess ? Colors.green : Colors.red,
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (isSuccess && levelId != null) {
+                    navigateToHome(levelId);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[900],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                ),
+                child: const Text('OK', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void navigateToHome(String levelId) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage(username: usernameController.text)),
+    );
+  }
+
+  Future<void> login(String username, String password) async {
+    try {
+      final response = await dio.post(urlLogin, data: {
+        'username': username,
+        'password': password,
       });
+
+      if (response.statusCode == 200 && response.data['user'] != null) {
+        final data = response.data;
+        final String? levelId = data['user']['id_jenis_pengguna']?.toString();
+        final String userName = data['user']['nama'] ?? 'Pengguna';
+        final String token = data['token']; // Save the token
+
+        if (levelId != null && token.isNotEmpty) {
+          showLoginResultDialog(context, 'Selamat datang, $userName!', true, levelId);
+        } else {
+          showLoginResultDialog(context, 'Level ID atau token tidak ditemukan.', false, null);
+        }
+      } else {
+        showLoginResultDialog(context, 'Username atau password salah', false, null);
+      }
+    } on DioError catch (e) {
+      final errorMessage = e.response?.data['message'] ?? 'Terjadi kesalahan pada server.';
+      showLoginResultDialog(context, errorMessage, false, null);
+    } catch (e) {
+      showLoginResultDialog(context, 'Terjadi kesalahan. Silakan coba lagi.', false, null);
+    } finally {
+      usernameController.clear();
+      passwordController.clear();
     }
   }
 
@@ -146,7 +226,10 @@ class _LoginPageState extends State<LoginPage> {
 
               // Login button
               ElevatedButton(
-                onPressed: _login,
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  login(usernameController.text, passwordController.text);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: mediumBlue,
                   foregroundColor: lightBackground,
@@ -175,8 +258,8 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Belum punya akun?",
-                    style: TextStyle(color: lightBlue),
+                    'Belum punya akun?',
+                    style: TextStyle(color: lightBackground),
                   ),
                   TextButton(
                     onPressed: () {
@@ -186,8 +269,8 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                     child: Text(
-                      'Daftar',
-                      style: TextStyle(color: mediumBlue),
+                      'Daftar sekarang',
+                      style: TextStyle(color: lightBlue),
                     ),
                   ),
                 ],

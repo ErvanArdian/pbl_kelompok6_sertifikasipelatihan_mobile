@@ -8,25 +8,19 @@ const Color lightGrayishBlue = Color(0xFFCBDCEB);
 
 class TrainingDetailPage extends StatelessWidget {
   final String title;
-  final String status;
+  final String status; // This now represents the "Level Pelatihan"
   final String description;
-  final String date; // Menambahkan parameter tanggal
+  final String startDate; // Menambahkan parameter tanggal mulai
+  final String endDate; // Menambahkan parameter tanggal selesai
   final String location; // Menambahkan parameter lokasi
-  final String cost; // Menambahkan parameter biaya
-  final String quota; // Menambahkan parameter kuota
-  final List<String> materials; // Menambahkan parameter materi pelatihan
-  final String speaker; // Menambahkan parameter pembicara
 
   TrainingDetailPage({
     required this.title,
     required this.status,
     required this.description,
-    required this.date,
+    required this.startDate,
+    required this.endDate,
     required this.location,
-    required this.cost,
-    required this.quota,
-    required this.materials,
-    required this.speaker,
   });
 
   @override
@@ -47,12 +41,17 @@ class TrainingDetailPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Status: $status',
+              'Level Pelatihan: $status', // Changed to Level Pelatihan
               style: TextStyle(fontSize: 18, color: lightBlue),
             ),
             SizedBox(height: 10),
             Text(
-              'Tanggal: $date',
+              'Tanggal Mulai: $startDate', // Tanggal Mulai
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Tanggal Selesai: $endDate', // Tanggal Selesai
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 10),
@@ -60,30 +59,9 @@ class TrainingDetailPage extends StatelessWidget {
               'Lokasi: $location',
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 10),
-            Text(
-              'Biaya: $cost',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Kuota: $quota',
-              style: TextStyle(fontSize: 16),
-            ),
             SizedBox(height: 20),
             Text(
               'Deskripsi: $description',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Materi Pelatihan:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            ...materials.map((material) => Text(' - $material')).toList(),
-            SizedBox(height: 20),
-            Text(
-              'Pembicara: $speaker',
               style: TextStyle(fontSize: 16),
             ),
           ],
@@ -91,27 +69,4 @@ class TrainingDetailPage extends StatelessWidget {
       ),
     );
   }
-}
-
-// Contoh penggunaan TrainingDetailPage
-// Anda dapat menginisialisasi halaman ini dengan data pelatihan berikut di tempat lain dalam aplikasi Anda.
-void main() {
-  runApp(MaterialApp(
-    home: TrainingDetailPage(
-      title: 'AI Training Program',
-      status: 'Tersedia',
-      description: 'Pelatihan ini dirancang untuk memberikan pemahaman mendalam tentang konsep dasar kecerdasan buatan (AI) dan aplikasinya dalam berbagai industri.',
-      date: 'Januari 2024',
-      location: 'Location A',
-      cost: 'RP 1.000.000',
-      quota: '50 Peserta',
-      materials: [
-        'Pengenalan Kecerdasan Buatan',
-        'Algoritma Machine Learning',
-        'Deep Learning dan Jaringan Saraf Tiruan',
-        'Studi Kasus dan Proyek Praktis',
-      ],
-      speaker: 'Dr. Jane Doe, Ahli Kecerdasan Buatan dengan pengalaman lebih dari 10 tahun di industri.',
-    ),
-  ));
 }

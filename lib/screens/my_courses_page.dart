@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'training_detail_page.dart';
@@ -10,6 +11,12 @@ const Color lightBeige = Color(0xFFF3F3E0);
 const Color deepBlue = Color(0xFF133E87);
 const Color lightBlue = Color(0xFF608BC1);
 const Color lightGrayishBlue = Color(0xFFCBDCEB);
+
+
+final Dio dio = Dio();
+var all_data = [];
+
+String url_domain = "http://10.208.18.217:8000/"; 
 
 class MyCoursesPage extends StatefulWidget {
   @override

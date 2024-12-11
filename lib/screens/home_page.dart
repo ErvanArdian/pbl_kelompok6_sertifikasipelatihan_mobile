@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'my_courses_page.dart';
+import 'sertifikasi_page.dart';
+import 'pelatihan_page.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,8 +26,9 @@ class _HomePageState extends State<HomePage> {
     Center(
       child: Text('Home Page'), // Placeholder halaman Home
     ),
-    MyCoursesPage(),
-    ProfilePage(username: ''),
+    SertifikasiPage(), // Updated to SertifikasiPage
+    PelatihanPage(), // Updated to PelatihanPage
+    ProfilePage(username: ''), // ProfilePage remains the same
   ];
 
   @override
@@ -209,7 +211,11 @@ class _HomePageState extends State<HomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.library_books),
-              label: 'My Courses',
+              label: 'Sertifikasi', // Updated label to Sertifikasi
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'Pelatihan', // Updated label to Pelatihan
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
