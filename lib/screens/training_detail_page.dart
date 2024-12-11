@@ -12,7 +12,8 @@ class TrainingDetailPage extends StatelessWidget {
   final String description;
   final String startDate; // Menambahkan parameter tanggal mulai
   final String endDate; // Menambahkan parameter tanggal selesai
-  final String location; // Menambahkan parameter lokasi
+  final String location; // Menambahkan parameter lokasi 
+  final String idPengguna; // Menambahkan parameter id_pengguna
 
   TrainingDetailPage({
     required this.title,
@@ -21,6 +22,7 @@ class TrainingDetailPage extends StatelessWidget {
     required this.startDate,
     required this.endDate,
     required this.location,
+    required this.idPengguna, // Menambahkan parameter id_pengguna
   });
 
   @override

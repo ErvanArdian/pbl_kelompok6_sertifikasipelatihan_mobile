@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 import 'sertifikasi_page.dart';
 import 'pelatihan_page.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String username;
-  final int totalPelatihan;
-  final int totalSertifikasi;
+  final String username; // Username passed to the HomePage
 
   HomePage({
-    required this.username,
-    this.totalPelatihan = 5,
-    this.totalSertifikasi = 3,
+    required this.username, required String idJenisPengguna,
   });
 
   @override
@@ -20,23 +17,37 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  late String idPengguna;
 
   // Daftar halaman untuk masing-masing item navigation bar
-  final List<Widget> _pages = [
-    Center(
-      child: Text('Home Page'), // Placeholder halaman Home
-    ),
-    SertifikasiPage(), // Updated to SertifikasiPage
-    PelatihanPage(), // Updated to PelatihanPage
-    ProfilePage(username: ''), // ProfilePage remains the same
-  ];
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+    _pages = [
+      Center(child: Text('Home Page')), // Placeholder halaman Home
+      SertifikasiPage(),
+      PelatihanPage(),
+      ProfilePage(username: widget.username), // Pass the username dynamically
+    ];
+  }
+
+  // Load id_pengguna from SharedPreferences
+  Future<void> _loadUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      idPengguna = prefs.getString('id_pengguna') ?? ''; // Load id_pengguna or use an empty string if not found
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: _currentIndex == 0
-          ? _buildHomeContent() // Konten Home khusus
+          ? _buildHomeContent()
           : _pages[_currentIndex],
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
@@ -46,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       backgroundColor: Color(0xFF133E87),
       elevation: 0,
-      automaticallyImplyLeading: false, // This removes the back button
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           Column(
@@ -57,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
               Text(
-                'Hi ${widget.username}',
+                'Hi ${widget.username}', // Display the username dynamically
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -76,9 +87,9 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold),
               ),
               Image.asset(
-                'assets/logojti.jpg', // Replace with the correct path of your image
-                height: 30, // Set the size of the logo as needed
-                width: 30, // Set the size of the logo as needed
+                'assets/logojti.jpg', 
+                height: 30,
+                width: 30,
               ),
               SizedBox(width: 8),
             ],
@@ -118,7 +129,6 @@ class _HomePageState extends State<HomePage> {
               courseCard('Pelatihan Akan Dijalani', 2, Icons.schedule, context),
             ],
           ),
-          // Tambahkan konten lainnya sesuai kebutuhan
         ],
       ),
     );
@@ -127,7 +137,6 @@ class _HomePageState extends State<HomePage> {
   Widget _buildUserCard() {
     return GestureDetector(
       onTap: () {
-        // Navigate to ProfilePage when the card is clicked
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -156,21 +165,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${widget.username}',
+                      '${widget.username}', // Display username from the login
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // Uncomment and add other details if needed
-                    // Text(
-                    //   '43527*',
-                    //   style: TextStyle(
-                    //     color: Colors.white,
-                    //     fontSize: 14,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -211,11 +212,11 @@ class _HomePageState extends State<HomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.library_books),
-              label: 'Sertifikasi', // Updated label to Sertifikasi
+              label: 'Sertifikasi',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.school),
-              label: 'Pelatihan', // Updated label to Pelatihan
+              label: 'Pelatihan',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
@@ -224,7 +225,7 @@ class _HomePageState extends State<HomePage> {
           ],
           onTap: (index) {
             setState(() {
-              _currentIndex = index; // Change the active page index
+              _currentIndex = index;
             });
           },
         ),
@@ -236,7 +237,7 @@ class _HomePageState extends State<HomePage> {
       String title, int count, IconData icon, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Do nothing on tap as navigation to TrainingCategoryPage is not required
+        // No navigation needed here
       },
       child: Card(
         elevation: 4,

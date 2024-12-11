@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'training_detail_page.dart';
 
 final Dio dio = Dio(); // Initialize Dio for HTTP requests
-String url_domain = "http://192.168.65.82:8000/api/riwayat_pelatihan"; // API URL
+String url_domain = "http://192.168.231.252:8000/api/riwayat_pelatihan"; // API URL
 
 class PelatihanPage extends StatefulWidget {
   @override
@@ -12,18 +13,32 @@ class PelatihanPage extends StatefulWidget {
 
 class _PelatihanPageState extends State<PelatihanPage> {
   List<Map<String, dynamic>> all_data = []; // List to store training data
+  bool _isInitialized = false;
+  late String idPengguna;
 
   @override
   void initState() {
     super.initState();
-    fetchTrainingData(); // Fetch data from API when the widget is initialized
+    _loadUserId();
+  }
+
+  // Load id_pengguna from SharedPreferences
+  Future<void> _loadUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      idPengguna = prefs.getString('id_pengguna') ?? '';
+      _isInitialized = true;
+    });
+    if (idPengguna.isNotEmpty) {
+      fetchTrainingData(idPengguna);
+    }
   }
 
   // Function to fetch training data from API
-  Future<void> fetchTrainingData() async {
+  Future<void> fetchTrainingData(String idPengguna) async {
     try {
       final response = await dio.get(
-        url_domain,
+        '$url_domain?id_pengguna=$idPengguna',
         options: Options(
           headers: {
             'Content-Type': 'application/json', // Ensure content type is JSON
@@ -67,57 +82,60 @@ class _PelatihanPageState extends State<PelatihanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: all_data.isEmpty
-          ? Center(child: CircularProgressIndicator()) // Loader while data is being fetched
-          : ListView.builder(
-              padding: EdgeInsets.all(10),
-              itemCount: all_data.length,
-              itemBuilder: (context, index) {
-                final training = all_data[index];
-                return Card(
-                  color: const Color(0xFFCBDCEB),
-                  elevation: 4.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                    title: Text(
-                      training["nama_pelatihan"],
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF133E87),
+      body: _isInitialized
+          ? all_data.isEmpty
+              ? Center(child: CircularProgressIndicator()) // Loader while data is being fetched
+              : ListView.builder(
+                  padding: EdgeInsets.all(10),
+                  itemCount: all_data.length,
+                  itemBuilder: (context, index) {
+                    final training = all_data[index];
+                    return Card(
+                      color: const Color(0xFFCBDCEB),
+                      elevation: 4.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    subtitle: Text(
-                      'Lokasi: ${training["lokasi"]}\nTanggal: ${training["tanggal_mulai"]} - ${training["tanggal_selesai"]}',
-                      style: TextStyle(color: const Color(0xFF608BC1)),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: const Color(0xFF133E87),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TrainingDetailPage(
-                            title: training["nama_pelatihan"],
-                            status: training["level_pelatihan"], // Changed to level_pelatihan
-                            description: training["dokumen_pelatihan"],
-                            startDate: training["tanggal_mulai"], // Added startDate
-                            endDate: training["tanggal_selesai"], // Added endDate
-                            location: training["lokasi"],
+                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        title: Text(
+                          training["nama_pelatihan"],
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF133E87),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                        subtitle: Text(
+                          'Lokasi: ${training["lokasi"]}\nTanggal: ${training["tanggal_mulai"]} - ${training["tanggal_selesai"]}',
+                          style: TextStyle(color: const Color(0xFF608BC1)),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: const Color(0xFF133E87),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TrainingDetailPage(
+                                title: training["nama_pelatihan"],
+                                status: training["level_pelatihan"], // Changed to level_pelatihan
+                                description: training["dokumen_pelatihan"],
+                                startDate: training["tanggal_mulai"], // Added startDate
+                                endDate: training["tanggal_selesai"], // Added endDate
+                                location: training["lokasi"],
+                                idPengguna: idPengguna, // Added idPengguna
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                )
+          : Center(child: CircularProgressIndicator()), // Loader while id_pengguna is being loaded
     );
   }
 }

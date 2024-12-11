@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 import 'home_page.dart';
 import 'register_page.dart';
 
@@ -15,13 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   String errorMessage = '';
   bool _obscureText = true; // To toggle password visibility
 
-  // Colors based on the provided color palette
   final Color lightBackground = Color(0xFFF3F3E0); // F3F3E0
   final Color lightBlue = Color(0xFFCBDCEB); // CBDCEB
   final Color mediumBlue = Color(0xFF608BC1); // 608BC1
   final Color darkBlue = Color(0xFF133E87); // 133E87
 
-  final String urlLogin = "http://192.168.65.82:8000/api/login"; // Additional API URL
+  final String urlLogin = "http://192.168.231.252:8000/api/login"; // API URL for login
 
   @override
   void dispose() {
@@ -30,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void showLoginResultDialog(BuildContext context, String message, bool isSuccess, String? levelId) {
+  // Show a dialog based on login result
+  void showLoginResultDialog(BuildContext context, String message, bool isSuccess, String? penggunaId, String? username) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -55,8 +56,10 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  if (isSuccess && levelId != null) {
-                    navigateToHome(levelId);
+                  if (isSuccess && penggunaId != null) {
+                    // Save id_pengguna in SharedPreferences
+                    saveUserId(penggunaId);
+                    navigateToHome(penggunaId); // Pass penggunaId to HomePage
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -75,13 +78,23 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // Save id_pengguna to SharedPreferences
+  Future<void> saveUserId(String penggunaId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('id_pengguna', penggunaId); // Save id_pengguna as String
+  }
+
+  // Navigate to HomePage after successful login
   void navigateToHome(String levelId) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomePage(username: usernameController.text)),
+      MaterialPageRoute(
+        builder: (context) => HomePage(username: usernameController.text, idJenisPengguna: levelId),
+      ),
     );
   }
 
+  // Perform login request
   Future<void> login(String username, String password) async {
     try {
       final response = await dio.post(urlLogin, data: {
@@ -91,23 +104,23 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200 && response.data['user'] != null) {
         final data = response.data;
-        final String? levelId = data['user']['id_jenis_pengguna']?.toString();
-        final String userName = data['user']['nama'] ?? 'Pengguna';
+        final String? penggunaId = data['user']['id_jenis_pengguna']?.toString();
+        final String? userName = data['user']['nama'] ?? 'Pengguna';
         final String token = data['token']; // Save the token
 
-        if (levelId != null && token.isNotEmpty) {
-          showLoginResultDialog(context, 'Selamat datang, $userName!', true, levelId);
+        if (penggunaId != null && token.isNotEmpty) {
+          showLoginResultDialog(context, 'Selamat datang, $userName!', true, penggunaId, userName); // Pass username to the dialog
         } else {
-          showLoginResultDialog(context, 'Level ID atau token tidak ditemukan.', false, null);
+          showLoginResultDialog(context, 'Pengguna ID atau token tidak ditemukan.', false, null, null);
         }
       } else {
-        showLoginResultDialog(context, 'Username atau password salah', false, null);
+        showLoginResultDialog(context, 'Username atau password salah', false, null, null);
       }
     } on DioError catch (e) {
       final errorMessage = e.response?.data['message'] ?? 'Terjadi kesalahan pada server.';
-      showLoginResultDialog(context, errorMessage, false, null);
+      showLoginResultDialog(context, errorMessage, false, null, null);
     } catch (e) {
-      showLoginResultDialog(context, 'Terjadi kesalahan. Silakan coba lagi.', false, null);
+      showLoginResultDialog(context, 'Terjadi kesalahan. Silakan coba lagi.', false, null, null);
     } finally {
       usernameController.clear();
       passwordController.clear();

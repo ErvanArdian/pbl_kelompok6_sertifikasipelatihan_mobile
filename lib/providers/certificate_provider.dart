@@ -10,24 +10,21 @@ class CertificateProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  final String apiUrl = "http://192.168.65.82:8000/api/riwayat_sertifikasi"; // Your API URL
+  final String apiUrl = "http://192.168.231.252:8000/api/riwayat_sertifikasi"; // Your API URL
 
-  CertificateProvider() {
-    fetchCertificates();
-  }
-
-  Future<void> fetchCertificates() async {
+  Future<void> fetchCertificates(String idPengguna) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await Dio().get(apiUrl);
+      final response = await Dio().get('$apiUrl?id_pengguna=$idPengguna');
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         _certificates = data.map((item) {
           return Certificate.fromJson(item);
         }).toList();
+        _errorMessage = ''; // Clear any previous error message
       } else {
         _errorMessage = 'Failed to load data from API';
       }
