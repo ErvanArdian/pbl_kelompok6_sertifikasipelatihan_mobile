@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final Color mediumBlue = Color(0xFF608BC1); // 608BC1
   final Color darkBlue = Color(0xFF133E87); // 133E87
 
-  final String urlLogin = "http://192.168.231.252:8000/api/login"; // API URL for login
+  final String urlLogin = "http://192.168.16.252:8000/api/login"; // API URL for login
 
   @override
   void dispose() {
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Show a dialog based on login result
-  void showLoginResultDialog(BuildContext context, String message, bool isSuccess, String? penggunaId, String? username) {
+  void showLoginResultDialog(BuildContext context, String message, bool isSuccess, int? penggunaId, String? username) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -79,17 +79,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Save id_pengguna to SharedPreferences
-  Future<void> saveUserId(String penggunaId) async {
+  Future<void> saveUserId(int penggunaId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('id_pengguna', penggunaId); // Save id_pengguna as String
+    await prefs.setInt('id_pengguna', penggunaId); // Save id_pengguna as Integer
   }
 
   // Navigate to HomePage after successful login
-  void navigateToHome(String levelId) {
+  void navigateToHome(int penggunaId) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomePage(username: usernameController.text, idJenisPengguna: levelId),
+        builder: (context) => HomePage(username: usernameController.text, idJenisPengguna: penggunaId.toInt()),
       ),
     );
   }
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200 && response.data['user'] != null) {
         final data = response.data;
-        final String? penggunaId = data['user']['id_jenis_pengguna']?.toString();
+        final int? penggunaId = data['user']['id_jenis_pengguna'];
         final String? userName = data['user']['nama'] ?? 'Pengguna';
         final String token = data['token']; // Save the token
 

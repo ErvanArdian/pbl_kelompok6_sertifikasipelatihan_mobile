@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../providers/certificate_provider.dart';
+import 'package:pbl_kelompok6_sertifikasipelatihan_mobile/screens/sertifikasi_page.dart';
 
 class CertificateDetailPage extends StatelessWidget {
   final Certificate certificate;

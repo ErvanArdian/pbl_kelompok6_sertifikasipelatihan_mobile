@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'training_detail_page.dart';
 
 final Dio dio = Dio(); // Initialize Dio for HTTP requests
-String url_domain = "http://192.168.231.252:8000/api/riwayat_pelatihan"; // API URL
+String url_domain = "http://192.168.16.252:8000/api/riwayat_pelatihan"; // API URL
 
 class PelatihanPage extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class PelatihanPage extends StatefulWidget {
 class _PelatihanPageState extends State<PelatihanPage> {
   List<Map<String, dynamic>> all_data = []; // List to store training data
   bool _isInitialized = false;
-  late String idPengguna;
+  late int idPengguna; // Change to int
 
   @override
   void initState() {
@@ -26,16 +26,16 @@ class _PelatihanPageState extends State<PelatihanPage> {
   Future<void> _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      idPengguna = prefs.getString('id_pengguna') ?? '';
+      idPengguna = prefs.getInt('id_pengguna') ?? 0; // Change to getInt and default to 0
       _isInitialized = true;
     });
-    if (idPengguna.isNotEmpty) {
+    if (idPengguna != 0) {
       fetchTrainingData(idPengguna);
     }
   }
 
   // Function to fetch training data from API
-  Future<void> fetchTrainingData(String idPengguna) async {
+  Future<void> fetchTrainingData(int idPengguna) async {
     try {
       final response = await dio.get(
         '$url_domain?id_pengguna=$idPengguna',
@@ -126,7 +126,7 @@ class _PelatihanPageState extends State<PelatihanPage> {
                                 startDate: training["tanggal_mulai"], // Added startDate
                                 endDate: training["tanggal_selesai"], // Added endDate
                                 location: training["lokasi"],
-                                idPengguna: idPengguna, // Added idPengguna
+                                idPengguna: idPengguna, // Pass idPengguna as int
                               ),
                             ),
                           );

@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget {
   final String username; // Username passed to the HomePage
 
   HomePage({
-    required this.username, required String idJenisPengguna,
+    required this.username, required int idJenisPengguna,
   });
 
   @override
@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  late String idPengguna;
+  int idPengguna = 0; // Inisialisasi idPengguna dengan nilai default 0
 
   // Daftar halaman untuk masing-masing item navigation bar
   late List<Widget> _pages;
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      idPengguna = prefs.getString('id_pengguna') ?? ''; // Load id_pengguna or use an empty string if not found
+      idPengguna = prefs.getInt('id_pengguna') ?? 0; // Load id_pengguna or use 0 if not found
     });
   }
 
@@ -170,6 +170,14 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // Display the idPengguna as string
+                    Text(
+                      'ID Pengguna: $idPengguna', // Display the id_pengguna
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
                       ),
                     ),
                   ],

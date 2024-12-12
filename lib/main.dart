@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'screens/landing_page.dart';
-import 'providers/certificate_provider.dart';
+import 'screens/landing_page.dart'; // Import SertifikasiPage instead of LandingPage
 
 void main() {
   runApp(MyApp());
@@ -10,13 +8,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CertificateProvider(),
-      child: MaterialApp(
-        title: 'Pelatihan & Sertifikasi',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: LandingPage(),
-      ),
+    return MaterialApp(
+      title: 'Pelatihan & Sertifikasi',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LandingPage(), // Set SertifikasiPage as the home
     );
   }
 }
